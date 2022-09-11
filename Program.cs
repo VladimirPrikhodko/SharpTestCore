@@ -22,10 +22,10 @@ namespace Test
         public static int Age = default;
         //public Price() { Age = default; } 
 
-        [Fact]                                  // [Theory]                  several lines to method(string, int)
+        [Fact]                                  // [Theory]                  several lines to method(string, int) 
         public static void TestAdding()         // [InlineData("A", 0)]
         {                                       // [InlineData("B", 1)]
-            // размещение
+            //  размещение
             int a = 2;
             int b = 2;
             int expected = 4;
