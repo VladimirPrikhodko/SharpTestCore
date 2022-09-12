@@ -4,7 +4,7 @@ using static System.Console;
 
 namespace Test
 {
-    [Flags]
+    [Flags] 
     public enum FlagNumbers : byte
     {
         zero = 0b_0000_0000,
@@ -22,6 +22,7 @@ namespace Test
         public static int Age = default;
         //public Price() { Age = default; } 
 
+        /// <summary> Method with XUnit </summary>  
         [Fact]                                  // [Theory]                  several lines to method(string, int) 
         public static void TestAdding()         // [InlineData("A", 0)]
         {                                       // [InlineData("B", 1)]
@@ -36,8 +37,8 @@ namespace Test
             // утверждение
             Assert.Equal(expected, actual);
         }
-                                                                                    // default value
-        public static (string, int IntFromStr) MethodWithTupple(string str, string defaultValue = "5")
+                                           
+        public static (string, int IntFromStr) MethodWithTupple(string str, string defaultValue = "5")  // default value
             => (str, int.Parse(defaultValue));
 
         ///<summary>
@@ -64,7 +65,8 @@ namespace Test
             };
     }
 
-    public class SampleCollection<T>   // Generic Class with Indexer
+    /// <summary> Generic Class with Indexer </summary>  
+    public class SampleCollection<T>    
     {
         private T[] arr = new T[10];
         public T this[int idx]
@@ -76,12 +78,15 @@ namespace Test
 
     public class SharpTestCore
     {
+        int _immutableNum { get; init; } = 13;    // init - Одноразовый сеттер
+
         static void Main(string[] args)
         {
+
             SampleCollection<string> collection = new SampleCollection<string>();
             collection[0] = "first";
 
-            var tupple = Price.MethodWithTupple("13");
+            var tupple = Price.MethodWithTupple("13"); 
             WriteLine($"Tupple: {tupple.Item1} / {tupple.IntFromStr}");    // item or name
             (string strTup, int intTup) = tupple;         // Деконструция кортежа на две переменные
 
@@ -128,7 +133,7 @@ namespace Test
             string message = num switch
             {
                 > 0 and < 10 => " Correct number",   // { Items: > 10, Cost: > 1000.00m } => 0.10m     ( > 10,  > 1000.00m) => 0.10m
-                _ => " Wrong number"
+                           _ => " Wrong number"
             };
             WriteLine(num + message);
 
