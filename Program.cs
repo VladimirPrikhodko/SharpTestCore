@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using SharpTestCore;
+using System.Collections.Immutable;
+using System.Diagnostics;
 using Xunit;
 using static System.Console;
 
@@ -17,8 +19,13 @@ namespace Test
         sixtyFour = 0b_0100_0000,
     }
 
-    public class Price
+    public class Price : IDefaultMethod
     {
+        public event EventHandler PrintEvent;        // event
+
+        [Fact]
+        public void TriggerEvent() => PrintEvent?.Invoke(this, EventArgs.Empty);
+
         public static int Age = default;
         //public Price() { Age = default; } 
 
@@ -63,6 +70,7 @@ namespace Test
                 2 => 1,
                 _ => Fibbonachi(num - 1) + Fibbonachi(num - 2)
             };
+
     }
 
     /// <summary> Generic Class with Indexer </summary>  
@@ -76,12 +84,28 @@ namespace Test
         }
     }
 
+
+
+
     public class SharpTestCore
     {
         int _immutableNum { get; init; } = 13;    // init - Одноразовый сеттер
 
         static void Main(string[] args)
         {
+
+            IDefaultMethod defaultMethod = new Price();
+            defaultMethod.ShowDefaultMethod();
+
+            Person[] people = {
+                new Person { Name = "Nick"},
+                new Person { Name = "Mike"},
+                new Person { Name = "Angel"}
+            };
+            Array.Sort(people);
+            foreach (var man in people) 
+                WriteLine(man.Name);
+
 
             SampleCollection<string> collection = new SampleCollection<string>();
             collection[0] = "first";
@@ -106,10 +130,10 @@ namespace Test
 
             WriteLine(Price.Factorial(5));
 
-            for (int i = 1; i < 10; i++)
-            {
-                WriteLine("Fibbonachi " + i + " -> " + Price.Fibbonachi(i));
-            }
+            //for (int i = 1; i < 10; i++)
+            //{
+            //    WriteLine("Fibbonachi " + i + " -> " + Price.Fibbonachi(i));
+            //}
 
             ForegroundColor = (ConsoleColor)Enum.Parse(
                 enumType: typeof(ConsoleColor),
@@ -118,6 +142,7 @@ namespace Test
 
             int number = 1234567890;
             Console.WriteLine(number.ToString("000-000-00-00"));  // format number
+            Console.ResetColor();
 
             if (OperatingSystem.IsWindows())
             {
@@ -138,6 +163,16 @@ namespace Test
             WriteLine(num + message);
 
             WriteLine($"Date: {DateTime.Now: dd MMMM yyyy}");
+
+            Price price = new Price ();
+            price.PrintEvent += Price_Print;
+            price.TriggerEvent();        // Запускает ивент
+        }
+
+
+        public static void Price_Print(object sender, EventArgs e) { 
+            Price price = (Price)sender;
+            WriteLine("Event Done!");
         }
     }
 }
